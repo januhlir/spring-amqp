@@ -3,6 +3,7 @@ description = 'Spring AMQP'
 apply plugin: 'base'
 apply plugin: 'project-report'
 apply plugin: 'idea'
+apply plugin: 'maven'
 
 buildscript {
 	repositories {
@@ -354,4 +355,20 @@ task dist(dependsOn: assemble) {
 task wrapper(type: Wrapper) {
 	description = 'Generates gradlew[.bat] scripts'
 	gradleVersion = '1.6'
+}
+
+// FIXME: make this section environment independent, relying on Maven setting.xml, or simply local settings, URL should not be in project level makefile
+allprojects {
+uploadArchives {
+	repositories {
+	  mavenDeployer {
+		repository(url: "http://nexus01.elasticride.com:8081/nexus/content/repositories/releases") {
+		  authentication(
+			  userName: "jan.uhlir", 
+			  //password: "xxxxxxxxxxxxxxxx"
+			  )
+		}
+	  }
+	}
+}
 }
